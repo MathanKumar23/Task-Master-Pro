@@ -1,5 +1,8 @@
-# Stage 1: Build the JAR
-FROM maven:3.8.6-openjdk-17 AS build
+FROM openjdk:17 AS build
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven
 
 # Set the working directory
 WORKDIR /app
@@ -12,7 +15,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Stage 2: Create the runtime image
-FROM amazoncorretto:17.0.8-alpine3.18
+FROM amazoncorretto:17
 
 # Set environment variable
 ENV APP_HOME /usr/src/app
