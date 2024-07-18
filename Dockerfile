@@ -1,8 +1,13 @@
-FROM openjdk:17 AS build
+# Stage 1: Build the JAR
+FROM ubuntu:22.04 AS build
 
-# Install Maven
+# Install Java and Maven
 RUN apt-get update && \
-    apt-get install -y maven
+    apt-get install -y openjdk-17-jdk maven wget && \
+    wget https://downloads.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz && \
+    tar xzvf apache-maven-3.8.6-bin.tar.gz -C /opt && \
+    ln -s /opt/apache-maven-3.8.6 /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/bin/mvn
 
 # Set the working directory
 WORKDIR /app
